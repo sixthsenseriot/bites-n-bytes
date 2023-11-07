@@ -1,7 +1,7 @@
 const express = require('express');
 const { Pool } = require('pg');
 const app = express();
-const port = 3000;
+const port = 1000;
 
 const creds = require('./creds.json'); // Update with your PostgreSQL credentials
 const pool = new Pool(creds);
