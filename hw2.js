@@ -224,8 +224,6 @@ app.post('/remove-from-order', async (req, res) => {
     }
 });
 
-// ... (existing code for server initialization)
-
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
 });

@@ -8,6 +8,7 @@ const creds = require('./creds.json');
 const pool = new Pool(creds);
 
 app.set('view engine', 'ejs');
+app.use(express.urlencoded({ extended: true })); // Middleware for parsing form data
 
 // Render homepage with menu selection
 app.get('/', async (req, res) => {
@@ -142,6 +143,68 @@ app.get('/orders', async function(req, res) {
     }
 
     res.render('orders', { customerId, customerInfoHtml, orderHtml, totalOrderAmount });
+});
+
+app.post('/add-to-order', async (req, res) => {
+    const customerId = req.body.customerId;
+    const foodId = req.body.foodId;
+
+    if (!customerId || !foodId) {
+        return res.status(400).send("Invalid customer ID or food ID");
+    }
+
+    try {
+        const orderResult = await pool.query(`
+            SELECT order_id
+            FROM Orders
+            WHERE customer_id = $1
+        `, [customerId]);
+
+        let orderId;
+
+        if (orderResult.rows.length > 0) {
+            orderId = orderResult.rows[0].order_id;
+        } else {
+            const newOrderResult = await pool.query(`
+                INSERT INTO Orders (customer_id, restaurant_id, order_date, package_meal)
+                VALUES ($1, 1, current_date, false) -- Assuming restaurant ID is 1 and package_meal is set to false
+                RETURNING order_id
+            `, [customerId]);
+
+            orderId = newOrderResult.rows[0].order_id;
+        }
+
+        await pool.query(`
+            INSERT INTO OrderItems (order_id, food_id)
+            VALUES ($1, $2)
+        `, [orderId, foodId]);
+
+        // Redirect back to the customer's order page
+        res.redirect(`/orders?customerId=${customerId}`);
+    } catch (err) {
+        res.status(500).send("Error: " + err.message);
+    }
+});
+
+app.post('/remove-from-order', async (req, res) => {
+    const orderItemId = req.body.orderItemId;
+    const customerId = req.body.customerId; // Include this line to retrieve the customer ID
+
+    if (!orderItemId) {
+        return res.status(400).send("Invalid order item ID");
+    }
+
+    try {
+        await pool.query(`
+            DELETE FROM OrderItems
+            WHERE order_item_id = $1
+        `, [orderItemId]);
+
+        // Redirect back to the customer's order page with the customer ID
+        return res.redirect(`/orders?customerId=${customerId}`);
+    } catch (err) {
+        return res.status(500).send("Error: " + err.message);
+    }
 });
 
 app.listen(port, () => {
