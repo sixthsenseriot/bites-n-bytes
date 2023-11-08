@@ -10,8 +10,8 @@
 
 **Software Stack:**
 * Database: PostgreSQL
-* Backend: Express and NodeJS
-* Frontend: HTML with Bootstrap
+* Backend: Express, NodeJS, and EJS
+* Frontend: EJS and HTML with Bootstrap
 
 ## Requirements:
 The application will be run on the user's local machine, therefore Node JS is required to run and 
