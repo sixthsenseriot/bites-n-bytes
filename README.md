@@ -12,7 +12,6 @@
 * Database: PostgreSQL
 * Backend: Express and NodeJS
 * Frontend: HTML with Bootstrap
-* Additional: EJS and FontAwesome
 
 ## Requirements:
 The application will be run on the user's local machine, therefore Node JS is required to run and 
