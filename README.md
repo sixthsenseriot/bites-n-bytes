@@ -1,6 +1,6 @@
 ## BitesNBytes
  This repository contains a multi-restaurant food order web and database application that is a build for 
- COSC 3380 - Database Systems with Dr. Carlos Ordonez of Fall 2023.
+ COSC 3380 Database Systems with Dr. Carlos Ordonez of Fall 2023.
 
  **Group Members:**
  * Mimi Nguyen
@@ -36,4 +36,4 @@ npm install
 ```
 node app.js
 ```
-5. Navigate to localhost:5000 in a browser (Chrome, Edge, Firefox) to view web interface
+5. Navigate to localhost:2000 in a browser (Chrome, Edge, Firefox) to view web interface
