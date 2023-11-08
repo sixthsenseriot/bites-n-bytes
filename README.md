@@ -1,5 +1,5 @@
 ## BitesNBytes
- This repository contains a multi-restaurant food order web and database application that is a build for 
+ This repository contains a multi-restaurant food order web and database application that is a project build for 
  COSC 3380 Database Systems with Dr. Carlos Ordonez of Fall 2023.
 
  **Group Members:**
