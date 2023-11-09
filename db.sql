@@ -13,7 +13,7 @@ CREATE TABLE FoodItems (
     food_id SERIAL PRIMARY KEY,
     name VARCHAR(255),
     description TEXT,
-    price DECIMAL(10, 2), -- Price in dollars
+    price DECIMAL(10, 2),
     category_id INT REFERENCES FoodCategories(category_id)
 );
 
@@ -41,10 +41,10 @@ CREATE TABLE OrderItems (
 CREATE TABLE PaymentInfo (
     payment_id SERIAL PRIMARY KEY,
     order_id INT REFERENCES Orders(order_id),
-    payment_amount DECIMAL(10, 2), -- Payment amount in dollars
+    payment_amount DECIMAL(10, 2),
     payment_date DATE,
-    tax_amount DECIMAL(10, 2), -- Tax amount in dollars
-    tips_amount DECIMAL(10, 2) -- Tips amount in dollars
+    tax_amount DECIMAL(10, 2),
+    tips_amount DECIMAL(10, 2) 
 );
 
 INSERT INTO Restaurants (name, location)
