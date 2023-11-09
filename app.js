@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = 2000;
+const port = 5000;
 const path = require("path");
 const { Pool } = require('pg');
 
@@ -218,6 +218,8 @@ app.post('/checkedout', async (req, res) => {
     let customerInfoHtml = "";
     let orderHtml = "";
     let totalOrderAmount = 0; // Initialize total order amount to 0.
+    const foodId = req.body.foodId;
+    const orderItemId = req.body.orderItemId;
 
     if (!customerId) {
         return res.status(400).send("Invalid customer ID");
@@ -285,6 +287,40 @@ app.post('/checkedout', async (req, res) => {
     } catch (err) {
         return res.status(500).send("Error: " + err.message);
     }
+
+    // Create new table CustomerTransaction and OrderHistory
+    try {
+        const result = await pool.query(`
+        CREATE TABLE IF NOT EXISTS CustomerTransaction (
+            customer_id SERIAL PRIMARY KEY,
+            name VARCHAR(255) NOT NULL,
+            date DATE NOT NULL,
+            transaction VARCHAR(255) NOT NULL
+        );
+        `);
+    } catch (err) {
+        return res.status(500).send("Error: " + err.message);
+    }
+    try {
+        const result = await pool.query(`
+        CREATE TABLE IF NOT EXISTS OrderHIstory (
+            order_item_id SERIAL PRIMARY KEY,
+            order_id INT REFERENCES customer(customer_id),
+            food_id INT NOT NULL
+        );
+        `);
+    } catch (err) {
+        return res.status(500).send("Error: " + err.message);
+    }
+
+    // Add bought items to OrderHistory table
+    // try {
+    //     const newOrderResult = await pool.query(`
+    //     INSERT INTO OrderHistory (order_id, food_id) VALUES ($1, $2)
+    //     `, [customerId, foodId]);
+    // } catch (err) {
+    //     return res.status(500).send("Error: " + err.message);
+    // }
 
     res.render('checkedout', { customerId, customerInfoHtml, orderHtml, totalOrderAmount });
   });
