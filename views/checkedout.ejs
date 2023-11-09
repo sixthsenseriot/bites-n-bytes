@@ -21,36 +21,46 @@
         </div>
     </nav>
 
-    <div class="product-container mx-5 mt-4">
+    <div class="product-container mx-5 my-4">
       
-        <h1 class="d-flex justify-content-center">Checkout Page</h1>
-        <h4 class="d-flex justify-content-center m-3 text-center">Your Order</h4>
+        <h1 class="d-flex justify-content-center">Thank you <%- customerName.split(' ').slice(0, -1).join(' ') %>!</h1>
+        <h4 class="d-flex justify-content-center m-3 text-center">Your Order Receipt</h4>
 
-        <!-- <h3><%- customerId%></h3> -->
-        <div class="checkout-container">
-            <div class="row w-60 mx-auto">
-                <div class="col p-3 border">
-                    <h3 class="d-flex justify-content-center">Customer Info</h3>
-                    <%- customerInfoHtml %>
-                </div>
-                <div class="col p-3 border">
-                    <h3 class="d-flex justify-content-center">Your Order</h3>
-                </div>
-            </div>
-        </div>
         <% if (customerInfoHtml) { %>
-            <div class="border w-50 p-3 mx-auto">
-              <div>
-                <%- customerInfoHtml %>
-                <hr>
+          <div class="border w-50 p-3 mx-auto">
+            <div>
+
                 <%- orderHtml %>
-                <hr>
-                <h5 class="d-flex justify-content-center">Order Total: $<%= totalOrderAmount.toFixed(2) %></h5>
-                <div class="d-flex justify-content-center">
-                  <form action="/checkout">
-                    <input type="submit" value="Checkout" />
-                  </form>
+                <%  
+                var taxRate = 0.0625; // 6.25%
+                var taxAmount = totalOrderAmount * taxRate;
+                var tipRate = 0.15; // 15%
+                var tipAmount = totalOrderAmount * tipRate;
+                var totalAmount = taxAmount + tipAmount + totalOrderAmount
+                %>
+                <div class="price-container px-5 mb-3">
+                  <div class="row">
+                    <div class="col"><p class="d-flex justify-content-start">Subtotal:</p></div>
+                    <div class="col"><p class="d-flex justify-content-end">$<%= totalOrderAmount.toFixed(2) %></p></div>
+                  </div>
+                  <div class="row">
+                    <div class="col"><p class="d-flex justify-content-start">Tax Amount:</p></div>
+                    <div class="col"><p class="d-flex justify-content-end">$<%= taxAmount.toFixed(2) %></p></div>
+                  </div>
+                  <div class="row">
+                    <div class="col"><p class="d-flex justify-content-start">Tip Amount:</p></div>
+                    <div class="col"><p class="d-flex justify-content-end">$<%= tipAmount.toFixed(2) %></p></div>
+                  </div>
+                  <div class="row">
+                    <div class="col"><p class="d-flex justify-content-start font-weight-bold">Total Amount:</p></div>
+                    <div class="col"><p class="d-flex justify-content-end font-weight-bold">$<%= totalAmount.toFixed(2) %></p></div>
+                  </div>
                 </div>
+
+                <hr>
+                <h5 class="d-flex justify-content-center mb-3">Customer Info</h5>
+                <%- customerInfoHtml %>
+
               </div>
             </div>
           <% } %>
