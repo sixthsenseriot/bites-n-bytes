@@ -93,7 +93,7 @@ app.get('/orders', async function(req, res) {
                 const customer = customerResult.rows[0];
                 customerInfoHtml = `
                     <div>
-                        <h3 class="d-flex justify-content-center">Orders from Customer ID: ${customer.customer_id}</h3>
+                        <h3 class="d-flex justify-content-center mb-3">Orders from Customer ID: ${customer.customer_id}</h3>
                         <div class="customer-container d-flex justify-content-center">
                             <div>
                             <p>Name: ${customer.name}</p>
@@ -114,20 +114,22 @@ app.get('/orders', async function(req, res) {
                 if (orderResult.rows.length > 0) {
                     orderHtml = `
                         <div>
-                            <h5 class="d-flex justify-content-center">Customer Orders</h5>
+                            <h5 class="d-flex justify-content-center mb-3">Customer Orders</h5>
                             <div class="d-flex justify-content-center">
                             <div>
                                 <ul>
                                     ${orderResult.rows.map(order => {
                                         totalOrderAmount += parseFloat(order.price); // Add the price to the total order amount.
                                         return `
+                                            <div class="d-flex justify-content-center">
                                             <li>${order.food_name} - $${order.price}
                                                 <form action="/remove-from-order" method="POST" style="display:inline;">
                                                     <input type="hidden" name="orderItemId" value="${order.order_item_id}">
                                                     <input type="hidden" name="customerId" value="${customerId}"> <!-- Include customer ID -->
-                                                    <button type="submit">Remove</button>
+                                                    <button type="submit" class="btn btn-link">Remove</button>
                                                 </form>
                                             </li>
+                                            </div>
                                         `;
                                     }).join('')}
                                 </ul>
@@ -210,77 +212,75 @@ app.post('/remove-from-order', async (req, res) => {
 });
 
 // Checkout page
-app.post('/checkout', async (req, res) => {
-    const customerId = req.body.customerId;
-    let customerInfoHtml = "";
-    let orderHtml = "";
-    let totalOrderAmount = 0; // Initialize total order amount to 0.
+// app.post('/checkout', async (req, res) => {
+//     const customerId = req.body.customerId;
+//     let customerInfoHtml = "";
+//     let orderHtml = "";
+//     let totalOrderAmount = 0; // Initialize total order amount to 0.
 
-    if (!customerId) {
-        return res.status(400).send("Invalid customer ID");
-    }
+//     if (!customerId) {
+//         return res.status(400).send("Invalid customer ID");
+//     }
     
-    try {
-        const customerResult = await pool.query(`
-            SELECT customer_id, name, email, has_loyalty_card
-            FROM customer
-            WHERE customer_id = $1
-        `, [customerId]);
+//     try {
+//         const customerResult = await pool.query(`
+//             SELECT customer_id, name, email, has_loyalty_card
+//             FROM customer
+//             WHERE customer_id = $1
+//         `, [customerId]);
 
-        if (customerResult.rows.length > 0) {
-            const customer = customerResult.rows[0];
-            customerInfoHtml = `
-                <div>
-                    <h3 class="d-flex justify-content-center">Orders from Customer ID: ${customer.customer_id}</h3>
-                    <div class="customer-container d-flex justify-content-center">
-                        <div>
-                        <p>Name: ${customer.name}</p>
-                        <p>Email: ${customer.email}</p>
-                        <p>Loyalty Card: ${customer.has_loyalty_card ? 'Yes' : 'No'}</p>
-                        </div>
-                    </div>
-                </div>
-            `;
+//         if (customerResult.rows.length > 0) {
+//             const customer = customerResult.rows[0];
+//             customerInfoHtml = `
+//                 <div class="customer-container d-flex justify-content-center">
+//                     <div>
+//                         <p>Customer ID: ${customer.customer_id}</p>
+//                         <p>Name: ${customer.name}</p>
+//                         <p>Email: ${customer.email}</p>
+//                         <p>Loyalty Card: ${customer.has_loyalty_card ? 'Yes' : 'No'}</p>
+//                     </div>
+//                 </div>
+//             `;
 
-            const orderResult = await pool.query(`
-                SELECT oi.order_item_id, f.name AS food_name, f.price
-                FROM OrderItems oi
-                JOIN FoodItems f ON oi.food_id = f.food_id
-                WHERE oi.order_id IN (SELECT order_id FROM Orders WHERE customer_id = $1)
-            `, [customerId]);
+//             const orderResult = await pool.query(`
+//                 SELECT oi.order_item_id, f.name AS food_name, f.price
+//                 FROM OrderItems oi
+//                 JOIN FoodItems f ON oi.food_id = f.food_id
+//                 WHERE oi.order_id IN (SELECT order_id FROM Orders WHERE customer_id = $1)
+//             `, [customerId]);
 
-            if (orderResult.rows.length > 0) {
-                orderHtml = `
-                    <div>
-                        <h5 class="d-flex justify-content-center">Customer Orders</h5>
-                        <div class="d-flex justify-content-center">
-                        <div>
-                            <ul>
-                                ${orderResult.rows.map(order => {
-                                    totalOrderAmount += parseFloat(order.price); // Add the price to the total order amount.
-                                    return `
-                                        <li>${order.food_name} 
-                                            <form action="/remove-from-order" method="POST" style="display:inline;">
-                                                <input type="hidden" name="orderItemId" value="${order.order_item_id}">
-                                                <input type="hidden" name="customerId" value="${customerId}"> <!-- Include customer ID -->
-                                                <button type="submit">Remove</button>
-                                            </form>
-                                        </li>
-                                    `;
-                                }).join('')}
-                            </ul>
-                        </div>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-    } catch (err) {
-        return res.status(500).send("Error: " + err.message);
-    }
+//             if (orderResult.rows.length > 0) {
+//                 orderHtml = `
+//                     <div>
+//                         <h5 class="d-flex justify-content-center">Customer Orders</h5>
+//                         <div class="d-flex justify-content-center">
+//                         <div>
+//                             <ul>
+//                                 ${orderResult.rows.map(order => {
+//                                     totalOrderAmount += parseFloat(order.price); // Add the price to the total order amount.
+//                                     return `
+//                                         <li>${order.food_name} 
+//                                             <form action="/remove-from-order" method="POST" style="display:inline;">
+//                                                 <input type="hidden" name="orderItemId" value="${order.order_item_id}">
+//                                                 <input type="hidden" name="customerId" value="${customerId}"> <!-- Include customer ID -->
+//                                                 <button type="submit">Remove</button>
+//                                             </form>
+//                                         </li>
+//                                     `;
+//                                 }).join('')}
+//                             </ul>
+//                         </div>
+//                         </div>
+//                     </div>
+//                 `;
+//             }
+//         }
+//     } catch (err) {
+//         return res.status(500).send("Error: " + err.message);
+//     }
 
-    res.render('checkout', { customerId, customerInfoHtml, orderHtml, totalOrderAmount });
-  });
+//     res.render('checkout', { customerId, customerInfoHtml, orderHtml, totalOrderAmount });
+//   });
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

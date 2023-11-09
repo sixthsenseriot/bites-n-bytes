@@ -27,6 +27,17 @@
         <h4 class="d-flex justify-content-center m-3 text-center">Your Order</h4>
 
         <!-- <h3><%- customerId%></h3> -->
+        <div class="checkout-container">
+            <div class="row w-60 mx-auto">
+                <div class="col p-3 border">
+                    <h3 class="d-flex justify-content-center">Customer Info</h3>
+                    <%- customerInfoHtml %>
+                </div>
+                <div class="col p-3 border">
+                    <h3 class="d-flex justify-content-center">Your Order</h3>
+                </div>
+            </div>
+        </div>
         <% if (customerInfoHtml) { %>
             <div class="border w-50 p-3 mx-auto">
               <div>
