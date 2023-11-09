@@ -21,46 +21,28 @@
         </div>
     </nav>
 
-    <div class="product-container mx-5 my-4">
+    <div class="product-container mx-5 mt-4">
       
-        <h1 class="d-flex justify-content-center">Customer Orders</h1>
-        <h4 class="d-flex justify-content-center m-3 text-center">Enter your Customer ID to view your order</h4>
+        <h1 class="d-flex justify-content-center">Checkout Page</h1>
+        <h4 class="d-flex justify-content-center m-3 text-center">Your Order</h4>
 
-        <div class="results-content d-flex justify-content-center mb-3">
-          <form action="/orders" method="GET">
-            <label for="customerId">Enter Customer ID:</label>
-            <input type="number" name="customerId" id="customerId" required>
-            <button type="submit">View Orders</button>
-          </form>
-        </div>
-
+        <!-- <h3><%- customerId%></h3> -->
         <% if (customerInfoHtml) { %>
-          <div class="border w-50 p-3 mx-auto">
-            <div>
-              <%- customerInfoHtml %>
-              <hr>
-              <%- orderHtml %>
-              <hr>
-              <h5 class="d-flex justify-content-center">Subtotal: $<%= totalOrderAmount.toFixed(2) %></h5>
-              <%  
-                var taxRate = 0.0625; // 6.25%
-                var taxAmount = totalOrderAmount * taxRate;
-                var tipRate = 0.15; // 15%
-                var tipAmount = totalOrderAmount * tipRate;
-                var totalAmount = taxAmount + tipAmount + totalOrderAmount
-              %>
-              <h5 class="d-flex justify-content-center"> Tax Amount: $<%= taxAmount.toFixed(2) %></h5>
-              <h5 class="d-flex justify-content-center"> Tip Amount: $<%= tipAmount.toFixed(2) %></h5>
-              <h5 class="d-flex justify-content-center"> Total Amount: $<%= totalAmount.toFixed(2) %></h5>       
-              <div class="d-flex justify-content-center">
-                <form action="/checkout" method="POST">
-                  <input type="hidden" name="customerId" value="<%- customerId %>" />
-                  <button type="submit">Checkout</button>
-                </form>
+            <div class="border w-50 p-3 mx-auto">
+              <div>
+                <%- customerInfoHtml %>
+                <hr>
+                <%- orderHtml %>
+                <hr>
+                <h5 class="d-flex justify-content-center">Order Total: $<%= totalOrderAmount.toFixed(2) %></h5>
+                <div class="d-flex justify-content-center">
+                  <form action="/checkout">
+                    <input type="submit" value="Checkout" />
+                  </form>
+                </div>
               </div>
             </div>
-          </div>
-        <% } %>
+          <% } %>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
