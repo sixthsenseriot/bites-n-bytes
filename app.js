@@ -19,6 +19,7 @@ app.get('/', async (req, res) => {
 
     if (restaurantId) {
         try {
+            // Pulls data from each selected restaurant joined tables
             const result = await pool.query(`
                 SELECT DISTINCT f.food_id, f.name AS food_name, f.description AS food_description, f.price, c.category_name
                 FROM FoodItems f
@@ -84,6 +85,7 @@ app.get('/orders', async function(req, res) {
 
     if (customerId) {
         try {
+            // Pulls data from customer table to render customer info
             const customerResult = await pool.query(`
                 SELECT customer_id, name, email, has_loyalty_card
                 FROM customer
@@ -104,7 +106,8 @@ app.get('/orders', async function(req, res) {
                         </div>
                     </div>
                 `;
-
+                
+                // Pulls data from joined tables to render customer orders
                 const orderResult = await pool.query(`
                     SELECT oi.order_item_id, f.name AS food_name, f.price
                     FROM OrderItems oi
