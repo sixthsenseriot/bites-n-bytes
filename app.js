@@ -322,6 +322,31 @@ app.post('/checkedout', async (req, res) => {
     //     return res.status(500).send("Error: " + err.message);
     // }
 
+    // try {
+    //     const response = await fetch('/remove-from-order', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json',
+    //         },
+    //         body: JSON.stringify({
+    //             orderItemId: orderItemId,
+    //             customerId: customerId,
+    //         }),
+    //     });
+
+    //     // Handle the response if needed
+    //     if (response.ok) {
+    //         // Successful response, handle accordingly
+    //         console.log('Item removed successfully');
+    //     } else {
+    //         // Handle error response
+    //         console.error('Error removing item from order:', response.statusText);
+    //     }
+    // } catch (err) {
+    //     // Handle network or other errors
+    //     console.error('Network error:', err.message);
+    // }
+
     res.render('checkedout', { customerId, customerInfoHtml, orderHtml, totalOrderAmount });
   });
 

@@ -1,3 +1,13 @@
+DROP TABLE IF EXISTS Restaurants;
+DROP TABLE IF EXISTS FoodCategories;
+DROP TABLE IF EXISTS FoodItems;
+DROP TABLE IF EXISTS customer;
+DROP TABLE IF EXISTS Orders;
+DROP TABLE IF EXISTS OrderItems;
+DROP TABLE IF EXISTS PaymentInfo;
+DROP TABLE IF EXISTS CustomerTransaction;
+DROP TABLE IF EXISTS OrderHistory;
+
 CREATE TABLE Restaurants (
     restaurant_id SERIAL PRIMARY KEY,
     name VARCHAR(255),
@@ -34,6 +44,7 @@ CREATE TABLE Orders (
 
 CREATE TABLE OrderItems (
     order_item_id SERIAL PRIMARY KEY,
+    customer_id INT REFERENCES customer(customer_id),
     order_id INT REFERENCES Orders(order_id),
     food_id INT REFERENCES FoodItems(food_id)
 );
