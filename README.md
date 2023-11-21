@@ -36,4 +36,4 @@ npm install
 ```
 node app.js
 ```
-5. Navigate to localhost:2000 in a browser (Chrome, Edge, Firefox) to view web interface
+5. Navigate to localhost:5000 in a browser (Chrome, Edge, Firefox) to view web interface
