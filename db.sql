@@ -1,12 +1,12 @@
-DROP TABLE IF EXISTS Restaurants;
-DROP TABLE IF EXISTS FoodCategories;
-DROP TABLE IF EXISTS FoodItems;
-DROP TABLE IF EXISTS customer;
-DROP TABLE IF EXISTS Orders;
-DROP TABLE IF EXISTS OrderItems;
-DROP TABLE IF EXISTS PaymentInfo;
-DROP TABLE IF EXISTS CustomerTransaction;
-DROP TABLE IF EXISTS OrderHistory;
+DROP TABLE IF EXISTS Restaurants cascade;
+DROP TABLE IF EXISTS FoodCategories cascade;
+DROP TABLE IF EXISTS FoodItems cascade;
+DROP TABLE IF EXISTS customer cascade;
+DROP TABLE IF EXISTS Orders cascade;
+DROP TABLE IF EXISTS OrderItems cascade;
+DROP TABLE IF EXISTS PaymentInfo cascade;
+DROP TABLE IF EXISTS CustomerTransaction cascade;
+DROP TABLE IF EXISTS OrderHistory cascade;
 
 CREATE TABLE Restaurants (
     restaurant_id SERIAL PRIMARY KEY,
