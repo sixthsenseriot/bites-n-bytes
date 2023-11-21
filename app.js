@@ -179,9 +179,9 @@ app.post('/add-to-order', async (req, res) => {
         }
 
         await pool.query(`
-            INSERT INTO OrderItems (order_id, food_id)
-            VALUES ($1, $2)
-        `, [orderId, foodId]);
+            INSERT INTO OrderItems (customer_id, order_id, food_id)
+            VALUES ($1, $2, $3)
+        `, [customerId, orderId, foodId]);
 
         // Redirect back to the customer's order page
         res.redirect(`/orders?customerId=${customerId}`);
@@ -322,30 +322,18 @@ app.post('/checkedout', async (req, res) => {
     //     return res.status(500).send("Error: " + err.message);
     // }
 
-    // try {
-    //     const response = await fetch('/remove-from-order', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         },
-    //         body: JSON.stringify({
-    //             orderItemId: orderItemId,
-    //             customerId: customerId,
-    //         }),
-    //     });
+    if (!customerId) {
+        return res.status(400).send("Invalid customer ID");
+    }
 
-    //     // Handle the response if needed
-    //     if (response.ok) {
-    //         // Successful response, handle accordingly
-    //         console.log('Item removed successfully');
-    //     } else {
-    //         // Handle error response
-    //         console.error('Error removing item from order:', response.statusText);
-    //     }
-    // } catch (err) {
-    //     // Handle network or other errors
-    //     console.error('Network error:', err.message);
-    // }
+    try {
+        await pool.query(`
+            DELETE FROM OrderItems
+            WHERE customer_id = $1
+        `, [customerId]);
+    } catch (err) {
+        return res.status(500).send("Error: " + err.message);
+    }
 
     res.render('checkedout', { customerId, customerInfoHtml, orderHtml, totalOrderAmount });
   });
