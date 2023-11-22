@@ -172,6 +172,7 @@ app.post('/add-to-order', async (req, res) => {
         if (orderResult.rows.length > 0) {
             orderId = orderResult.rows[0].order_id;
         } else {
+            // Adds order to orders table
             const newOrderResult = await pool.query(`
                 INSERT INTO Orders (customer_id, restaurant_id, order_date, package_meal)
                 VALUES ($1, 1, current_date, false) -- Assuming restaurant ID is 1 and package_meal is set to false
@@ -203,6 +204,7 @@ app.post('/remove-from-order', async (req, res) => {
     }
 
     try {
+        // Deletes order from orderitems table
         await pool.query(`
             DELETE FROM OrderItems
             WHERE order_item_id = $1
