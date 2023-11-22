@@ -2,6 +2,9 @@
  This repository contains a multi-restaurant food order web and database application that is a project build for 
  COSC 3380 Database Systems with Dr. Carlos Ordonez of Fall 2023.
 
+ **Video Demo**
+ https://youtu.be/YtH1s6OapYw
+
  **Group Members:**
  * Mimi Nguyen
  * Karson Arrants
