@@ -27,16 +27,18 @@ view this project, as well as to install dependencies. You will need:
 ```
 git clone https://github.com/sixthsenseriot/bites-n-bytes
 ```
-2. In a Windows terminal, navigate to repository base
+2. Navigate main.sql file and copy and paste queries in psql shell
+3. Navigate transaction.sql file and copy and paste queries in psql shell
+4. In a Windows terminal, navigate to repository base
 ```
 cd bites-n-bytes
 ```
-3. Install dependencies
+5. Install dependencies
 ```
 npm install
 ```
-4. In the first terminal in the base directory, run the application using this command. This command will start the backend server on port 2000
+6. In the first terminal in the base directory, run the application using this command. This command will start the backend server on port 2000
 ```
 node app.js
 ```
-5. Navigate to localhost:5000 in a browser (Chrome, Edge, Firefox) to view web interface
+7. Navigate to localhost:5000 in a browser (Chrome, Edge, Firefox) to view web interface
